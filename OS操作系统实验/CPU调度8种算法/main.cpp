@@ -223,7 +223,7 @@ void RR10(){
 	double AveW=0;
 	double AveT=0;
 	for(int i=0;i<Num_processes;i++){
-		AveW+=pcb[i].waitingtime;
+		AveW+=pcb[i].turnaround-pcb[i].cputime;
 		AveT+=pcb[i].turnaround;
 	}
 	AveW/=Num_processes;
@@ -400,8 +400,8 @@ void n_pri(){
 		ok[jb]=1;
 		pcb[jb].finishtime=time;
 		pcb[jb].turnaround=pcb[jb].finishtime-pcb[jb].arrivetime;
+		double pri=1<<30;
 		for(int j=0;j<Num_processes;j++){
-			double pri=1<<30;
 			if(!ok[j]&&pcb[j].arrivetime<time&&pcb[j].priority<pri){
 				jb=j;
 				pri=pcb[j].priority;
@@ -549,7 +549,7 @@ int main(){
 		pcb[i].pid--;
 		fscanf(fp,"%d",&pcb[i].arrivetime); 	//读入到达时间
 		fscanf(fp,"%d",&pcb[i].cputime); 		//读入CPU时间
-		fscanf(fp,"%d",&pcb[i].priority); 		//优先级
+		fscanf(fp,"%f",&pcb[i].priority); 		//优先级
 	}
 	FCFS();
 	RR5();
